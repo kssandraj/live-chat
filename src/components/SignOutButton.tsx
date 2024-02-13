@@ -19,7 +19,7 @@ const SignOutButton: FC<SignOutButtonProps> = ({ ...props }) => {
         console.log("clicked");
         setIsSigningOut(true);
         try {
-          await signOut();
+          await signOut({ callbackUrl: "/api/auth/login" });
         } catch (error) {
           toast.error("There was a problem while signing out");
           console.log(error);
