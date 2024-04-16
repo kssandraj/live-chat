@@ -1,5 +1,3 @@
-"use client";
-
 import { getFriendsByUserId } from "@/helpers/get-friends-by-user-id";
 import { fetchRedis } from "@/helpers/redis";
 import { authOptions } from "@/lib/auth";
@@ -9,23 +7,31 @@ import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FC } from "react";
 
 const page = async ({}) => {
   const session = await getServerSession(authOptions);
+  console.log("session", session);
 
   if (!session) notFound();
 
   const friends = await getFriendsByUserId(session.user.id);
 
+  console.log("friends", friends);
+
   const friendsWithLastMessage = await Promise.all(
     friends.map(async (friend) => {
+      console.log("single friend", friend);
+
       const [lastMessageRaw] = (await fetchRedis(
         "zrange",
         `chat:${chatHrefConstructor(session.user.id, friend.id)}:messages`,
         -1,
         -1
       )) as string[];
+
+      console.log("lastMessageRaw", lastMessageRaw);
+
+      if (!lastMessageRaw) return { ...friend, lastMessage: null };
 
       const lastMessage = JSON.parse(lastMessageRaw) as Message;
 
@@ -68,11 +74,11 @@ const page = async ({}) => {
                 <h4 className="text-lg font-semibold">{friend.name}</h4>
                 <p className="mt-1 max-w-md">
                   <span className="text-zinc-400">
-                    {friend.lastMessage.senderId === session.user.id
+                    {friend.lastMessage?.senderId === session.user.id
                       ? "You: "
                       : ""}
                   </span>
-                  {friend.lastMessage.text}
+                  {friend.lastMessage?.text}
                 </p>
               </div>
             </Link>

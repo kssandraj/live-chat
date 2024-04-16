@@ -1,9 +1,9 @@
-import { Icon, Icons } from "@/components/Icons";
+import { Icons } from "@/components/Icons";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 import Image from "next/image";
 import SignOutButton from "@/components/SignOutButton";
 import FriendRequestsSidebarOptions from "@/components/FriendRequestsSidebarOptions";
@@ -113,7 +113,10 @@ const Layout = async ({ children }: LayoutProps) => {
                 <span className="sr-only">Your profile</span>
                 <div className="flex flex-col">
                   <span aria-hidden="true">{session.user.name}</span>
-                  <span className="text-xs text-zinc-400" aria-hidden="true">
+                  <span
+                    className="text-xs text-zinc-400 overflow-hidden overflow-ellipsis max-w-[10rem]"
+                    aria-hidden="true"
+                  >
                     {session.user.email}
                   </span>
                 </div>

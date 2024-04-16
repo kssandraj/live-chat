@@ -1,3 +1,5 @@
+"use client";
+
 import TextAreaAutosize from "react-textarea-autosize";
 
 import { FC, useRef, useState } from "react";
