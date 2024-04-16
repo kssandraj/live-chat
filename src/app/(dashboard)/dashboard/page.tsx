@@ -10,26 +10,18 @@ import { notFound } from "next/navigation";
 
 const page = async ({}) => {
   const session = await getServerSession(authOptions);
-  console.log("session", session);
-
   if (!session) notFound();
 
   const friends = await getFriendsByUserId(session.user.id);
 
-  console.log("friends", friends);
-
   const friendsWithLastMessage = await Promise.all(
     friends.map(async (friend) => {
-      console.log("single friend", friend);
-
       const [lastMessageRaw] = (await fetchRedis(
         "zrange",
         `chat:${chatHrefConstructor(session.user.id, friend.id)}:messages`,
         -1,
         -1
       )) as string[];
-
-      console.log("lastMessageRaw", lastMessageRaw);
 
       if (!lastMessageRaw) return { ...friend, lastMessage: null };
 
