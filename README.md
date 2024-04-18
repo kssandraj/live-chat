@@ -12,3 +12,4 @@ This is a realtime chat app built with NextJS using TypeScript, Upstash Redis as
     Google Authentication
 
 ## Demo
+live-chat-azure.vercel.app
