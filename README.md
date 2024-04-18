@@ -13,4 +13,4 @@ This is a realtime chat app built with NextJS using TypeScript, Upstash Redis as
 
 ## Demo
 
-live-chat-azure.vercel.app
+https://live-chat-azure.vercel.app
